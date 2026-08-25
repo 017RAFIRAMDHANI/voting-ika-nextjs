@@ -22,7 +22,7 @@ export async function POST(request: Request) {
 
     const password = await verifyPassword(parsed.data.password, user.passwordHash);
     if (!password.valid) return jsonError("User ID atau password salah.", 401);
-    if (user.role !== "Mahasiswa") {
+    if (user.role !== "Alumni") {
       return jsonError("Akun administrator harus masuk melalui Login Administrator.", 403);
     }
 

@@ -1,4 +1,4 @@
-export type UserRole = "Mahasiswa" | "Admin" | "Super Administrator";
+export type UserRole = "Alumni" | "Admin";
 
 export type SessionUser = {
   id: number;

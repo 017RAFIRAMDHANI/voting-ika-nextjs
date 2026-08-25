@@ -8,7 +8,7 @@ const schema = z.object({
   userId: z.string().trim().min(1).max(255),
   displayName: z.string().trim().min(2).max(255),
   password: z.string().min(6).max(255),
-  role: z.enum(["Mahasiswa", "Admin", "Super Administrator"])
+  role: z.enum(["Alumni", "Admin"])
 });
 
 export async function POST(request: Request) {

@@ -25,8 +25,8 @@ CREATE TABLE IF NOT EXISTS users (
   user_id VARCHAR(255) NOT NULL UNIQUE,
   password_hash TEXT NOT NULL,
   display_name VARCHAR(255) NOT NULL,
-  role VARCHAR(32) NOT NULL DEFAULT 'Mahasiswa'
-    CHECK (role IN ('Mahasiswa', 'Admin', 'Super Administrator')),
+  role VARCHAR(32) NOT NULL DEFAULT 'Alumni'
+    CHECK (role IN ('Alumni', 'Admin')),
 
   has_voted BOOLEAN NOT NULL DEFAULT FALSE,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),

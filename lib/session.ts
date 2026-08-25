@@ -91,5 +91,5 @@ export async function getSessionUser(): Promise<SessionUser | null> {
 }
 
 export function isAdmin(user: SessionUser | null) {
-  return user?.role === "Admin" || user?.role === "Super Administrator";
+  return user?.role === "Admin";
 }

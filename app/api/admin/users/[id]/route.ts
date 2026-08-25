@@ -8,7 +8,7 @@ const schema = z.object({
   userId: z.string().trim().min(1).max(255),
   displayName: z.string().trim().min(2).max(255),
   password: z.string().max(255).optional().default(""),
-  role: z.enum(["Mahasiswa", "Admin", "Super Administrator"])
+  role: z.enum(["Alumni", "Admin"])
 });
 
 function parseId(value: string) {

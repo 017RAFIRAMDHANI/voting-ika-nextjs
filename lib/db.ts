@@ -29,7 +29,7 @@ export async function findUserByLogin(userId: string) {
         userId: string;
         passwordHash: string;
         displayName: string;
-        role: "Mahasiswa" | "Admin" | "Super Administrator";
+        role: "Alumni" | "Admin";
         hasVoted: boolean;
       }
     | null;
@@ -53,7 +53,7 @@ export async function findSessionUser(id: number) {
         id: number;
         userId: string;
         displayName: string;
-        role: "Mahasiswa" | "Admin" | "Super Administrator";
+        role: "Alumni" | "Admin";
         hasVoted: boolean;
       }
     | null;
@@ -176,7 +176,7 @@ export async function importUsers(
       )
     ), saved AS (
       INSERT INTO users (user_id, display_name, password_hash, role, has_voted)
-      SELECT user_id, display_name, password_hash, 'Mahasiswa', FALSE
+      SELECT user_id, display_name, password_hash, 'Alumni', FALSE
       FROM imported
       ON CONFLICT (user_id) DO UPDATE SET
         display_name = EXCLUDED.display_name,
@@ -208,7 +208,7 @@ export async function getAdminStats(): Promise<AdminStats> {
   const rows = await sql`
     SELECT
       (SELECT COUNT(*)::int FROM users) AS users,
-      (SELECT COUNT(*)::int FROM users WHERE role = 'Mahasiswa') AS voters,
+      (SELECT COUNT(*)::int FROM users WHERE role = 'Alumni') AS voters,
       (SELECT COUNT(*)::int FROM users WHERE has_voted = TRUE) AS voted,
       (SELECT COUNT(*)::int FROM candidates) AS candidates,
       (SELECT COALESCE(SUM(votes), 0)::int FROM candidates) AS "totalVotes"

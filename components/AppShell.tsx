@@ -18,7 +18,7 @@ export default function AppShell({
 }) {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
-  const admin = user?.role === "Admin" || user?.role === "Super Administrator";
+  const admin = user?.role === "Admin";
 
   return (
     <main className="app-main">

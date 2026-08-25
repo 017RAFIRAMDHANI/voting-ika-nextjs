@@ -5,7 +5,7 @@ import { useMemo, useState, type FormEvent } from "react";
 import LoadingButton from "@/components/LoadingButton";
 import type { AdminUserRecord, UserRole } from "@/lib/types";
 
-const emptyForm = { id: 0, userId: "", displayName: "", password: "", role: "Mahasiswa" as UserRole };
+const emptyForm = { id: 0, userId: "", displayName: "", password: "", role: "Alumni" as UserRole };
 
 export default function AdminUserManager({ users, currentUserId }: { users: AdminUserRecord[]; currentUserId: number }) {
   const router = useRouter();
@@ -65,7 +65,7 @@ export default function AdminUserManager({ users, currentUserId }: { users: Admi
           <form className="row g-3" onSubmit={submit}>
             <div className="col-md-3"><label className="form-label">User ID</label><input className="form-control" required value={form.userId} onChange={(e) => setForm({ ...form, userId: e.target.value })} /></div>
             <div className="col-md-3"><label className="form-label">Nama Pengguna</label><input className="form-control" required value={form.displayName} onChange={(e) => setForm({ ...form, displayName: e.target.value })} /></div>
-            <div className="col-md-3"><label className="form-label">Jabatan</label><select className="form-select" value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value as UserRole })}><option>Mahasiswa</option><option>Admin</option><option>Super Administrator</option></select></div>
+            <div className="col-md-3"><label className="form-label">Jabatan</label><select className="form-select" value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value as UserRole })}><option>Alumni</option><option>Admin</option></select></div>
             <div className="col-md-3"><label className="form-label">Password {form.id && "(kosongkan jika tetap)"}</label><input type="password" className="form-control" required={!form.id} minLength={6} value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} /></div>
             <div className="col-12 d-flex gap-2">
               <LoadingButton busy={busy} type="submit" className="btn btn-primary">{form.id ? "Simpan Perubahan" : "Tambah Akun"}</LoadingButton>
