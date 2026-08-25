@@ -18,7 +18,7 @@ export default function AdminUserManager({ users, currentUserId }: { users: Admi
   const filtered = useMemo(() => {
     const needle = search.toLowerCase().trim();
     return needle
-      ? users.filter((user) => [user.userId, user.displayName, user.role, user.voterName]
+      ? users.filter((user) => [user.userId, user.displayName, user.role]
           .filter(Boolean).some((value) => value!.toLowerCase().includes(needle)))
       : users;
   }, [search, users]);
@@ -86,7 +86,7 @@ export default function AdminUserManager({ users, currentUserId }: { users: Admi
           <table className="table"><thead><tr><th>#</th><th>User ID</th><th>Nama</th><th>Jabatan</th><th>Biodata</th><th>Status</th><th>Aksi</th></tr></thead>
             <tbody>{filtered.map((user, index) => <tr key={user.id}>
               <td>{index + 1}</td><td>{user.userId}</td><td>{user.displayName}</td><td><span className="badge bg-label-primary">{user.role}</span></td>
-              <td>{user.voterName ?? <i className="text-danger">Belum diisi</i>}</td><td>{user.hasVoted ? <span className="badge bg-success">Sudah memilih</span> : <span className="badge bg-warning">Belum memilih</span>}</td>
+              <td>-</td><td>{user.hasVoted ? <span className="badge bg-success">Sudah memilih</span> : <span className="badge bg-warning">Belum memilih</span>}</td>
               <td><div className="d-flex gap-1">
                 <button className="btn btn-sm btn-info" type="button" onClick={() => edit(user)}><i className="bx bx-edit" /></button>
                 {user.hasVoted && <button className="btn btn-sm btn-warning" type="button" disabled={busy} onClick={() => action(`/api/admin/users/${user.id}/reset-vote`, "POST", `Reset pilihan ${user.displayName}? Jumlah suara kandidat akan dikurangi.`)}><i className="bx bx-reset" /></button>}

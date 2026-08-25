@@ -1,14 +1,58 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState, type FormEvent } from "react";
+import { useState } from "react";
 import LoadingButton from "@/components/LoadingButton";
 import type { VoterRecord } from "@/lib/types";
 
 export default function VoterEditForm({ voter }: { voter: VoterRecord }) {
-  const router = useRouter(); const [name, setName] = useState(voter.name); const [cohort, setCohort] = useState(voter.cohort);
-  const [busy, setBusy] = useState(false); const [message, setMessage] = useState(""); const [error, setError] = useState("");
-  async function submit(event: FormEvent) { event.preventDefault(); setBusy(true); setError(""); setMessage(""); try { const response = await fetch(`/api/admin/voters/${voter.id}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name, cohort }) }); const result = await response.json() as { message?: string }; if (!response.ok) throw new Error(result.message || "Data gagal disimpan."); setMessage("Biodata berhasil diperbarui."); router.refresh(); } catch (caught) { setError(caught instanceof Error ? caught.message : "Data gagal disimpan."); } finally { setBusy(false); } }
-  async function resetVote() { if (!voter.userRecordId || !window.confirm("Reset pilihan pemilih ini? Jumlah suara kandidat akan dikurangi.")) return; setBusy(true); setError(""); try { const response = await fetch(`/api/admin/users/${voter.userRecordId}/reset-vote`, { method: "POST" }); const result = await response.json() as { message?: string }; if (!response.ok) throw new Error(result.message || "Pilihan gagal direset."); setMessage("Hak pilih berhasil direset."); router.refresh(); } catch (caught) { setError(caught instanceof Error ? caught.message : "Pilihan gagal direset."); } finally { setBusy(false); } }
-  return <form onSubmit={submit}><div className="row"><div className="mb-3 col-md-6"><label className="form-label">Nama Pemilih</label><input className="form-control" value={name} onChange={(e) => setName(e.target.value)} required /></div><div className="mb-3 col-md-6"><label className="form-label">Tahun Angkatan</label><input className="form-control" value={cohort} onChange={(e) => setCohort(e.target.value)} pattern="[0-9]{4}" required /></div><div className="mb-3 col-md-6"><label className="form-label">User ID Pengguna</label><input className="form-control" value={voter.userId ?? ""} readOnly /></div><div className="mb-3 col-md-6"><label className="form-label">Nama Pengguna</label><input className="form-control" value={voter.displayName ?? ""} readOnly /></div><div className="mb-3 col-md-12"><label className="form-label">Calon Terpilih</label><input className="form-control" value={voter.candidateName ?? ""} readOnly /></div></div><div className="d-flex gap-2"><LoadingButton busy={busy} className="btn btn-primary" type="submit">Simpan Biodata</LoadingButton>{voter.hasVoted && <button className="btn btn-warning" type="button" onClick={resetVote} disabled={busy}>Reset Hak Pilih</button>}</div>{message && <div className="alert alert-success mt-3">{message}</div>}{error && <div className="alert alert-danger mt-3">{error}</div>}</form>;
+  const router = useRouter();
+  const [busy, setBusy] = useState(false); 
+  const [message, setMessage] = useState(""); 
+  const [error, setError] = useState("");
+  
+  async function resetVote() { 
+    if (!voter.userRecordId || !window.confirm("Reset pilihan pemilih ini? Jumlah suara kandidat akan dikurangi.")) return; 
+    setBusy(true); 
+    setError(""); 
+    try { 
+      const response = await fetch(`/api/admin/users/${voter.userRecordId}/reset-vote`, { method: "POST" }); 
+      const result = await response.json() as { message?: string }; 
+      if (!response.ok) throw new Error(result.message || "Pilihan gagal direset."); 
+      setMessage("Hak pilih berhasil direset."); 
+      router.refresh(); 
+    } catch (caught) { 
+      setError(caught instanceof Error ? caught.message : "Pilihan gagal direset."); 
+    } finally { 
+      setBusy(false); 
+    } 
+  }
+  
+  return (
+    <div>
+      <div className="row">
+        <div className="mb-3 col-md-6">
+          <label className="form-label">User ID Pengguna</label>
+          <input className="form-control" value={voter.userId ?? ""} readOnly />
+        </div>
+        <div className="mb-3 col-md-6">
+          <label className="form-label">Nama Pengguna</label>
+          <input className="form-control" value={voter.displayName ?? ""} readOnly />
+        </div>
+        <div className="mb-3 col-md-12">
+          <label className="form-label">Calon Terpilih</label>
+          <input className="form-control" value={voter.candidateName ?? "Belum memilih"} readOnly />
+        </div>
+      </div>
+      <div className="d-flex gap-2">
+        {voter.hasVoted && (
+          <LoadingButton busy={busy} className="btn btn-warning" type="button" onClick={resetVote}>
+            Reset Hak Pilih
+          </LoadingButton>
+        )}
+      </div>
+      {message && <div className="alert alert-success mt-3">{message}</div>}
+      {error && <div className="alert alert-danger mt-3">{error}</div>}
+    </div>
+  );
 }

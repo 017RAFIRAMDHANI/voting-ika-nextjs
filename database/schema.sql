@@ -14,8 +14,7 @@ CREATE TABLE IF NOT EXISTS candidates (
 
 CREATE TABLE IF NOT EXISTS voters (
   id SERIAL PRIMARY KEY,
-  name VARCHAR(255) NOT NULL,
-  cohort VARCHAR(4) NOT NULL,
+  user_id BIGINT UNIQUE REFERENCES users(id) ON DELETE CASCADE,
   candidate_id INTEGER REFERENCES candidates(id) ON DELETE SET NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
@@ -28,14 +27,12 @@ CREATE TABLE IF NOT EXISTS users (
   display_name VARCHAR(255) NOT NULL,
   role VARCHAR(32) NOT NULL DEFAULT 'Mahasiswa'
     CHECK (role IN ('Mahasiswa', 'Admin', 'Super Administrator')),
-  voter_id INTEGER UNIQUE REFERENCES voters(id) ON DELETE SET NULL,
+
   has_voted BOOLEAN NOT NULL DEFAULT FALSE,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+CREATE INDEX IF NOT EXISTS idx_voters_user_id ON voters(user_id);
 CREATE INDEX IF NOT EXISTS idx_voters_candidate_id ON voters(candidate_id);
-CREATE INDEX IF NOT EXISTS idx_voters_name ON voters(name);
-CREATE INDEX IF NOT EXISTS idx_voters_cohort ON voters(cohort);
-CREATE INDEX IF NOT EXISTS idx_users_voter_id ON users(voter_id);
 CREATE UNIQUE INDEX IF NOT EXISTS uq_candidates_name ON candidates(name);

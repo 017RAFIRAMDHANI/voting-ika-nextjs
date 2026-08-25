@@ -32,7 +32,7 @@ export async function POST(request: Request) {
 
     await createSession(user.id, request);
     return Response.json(
-      { ok: true, redirectTo: user.voterId ? "/pemilihan" : "/biodata" },
+      { ok: true, redirectTo: "/pemilihan" },
       { headers: { "Cache-Control": "no-store" } }
     );
   } catch (error) {

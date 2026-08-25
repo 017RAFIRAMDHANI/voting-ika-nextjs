@@ -5,7 +5,6 @@ export type SessionUser = {
   userId: string;
   displayName: string;
   role: UserRole;
-  voterId: number | null;
   hasVoted: boolean;
 };
 
@@ -27,8 +26,6 @@ export type VoterRecord = {
   userId: string | null;
   displayName: string | null;
   hasVoted: boolean | null;
-  name: string;
-  cohort: string;
   candidateName: string | null;
 };
 
@@ -37,9 +34,6 @@ export type AdminUserRecord = {
   userId: string;
   displayName: string;
   role: UserRole;
-  voterId: number | null;
-  voterName: string | null;
-  cohort: string | null;
   hasVoted: boolean;
 };
 

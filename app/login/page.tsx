@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 export default async function LoginPage() {
   const user = await getSessionUser();
   if (isAdmin(user)) redirect("/admin");
-  if (user) redirect(user.voterId ? "/pemilihan" : "/biodata");
+  if (user) redirect("/pemilihan");
   return (
     <div className="container d-flex justify-content-center align-items-center auth-shell">
       <div className="authentication-wrapper authentication-basic container-p-y auth-card">

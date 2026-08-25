@@ -10,7 +10,7 @@ export default function VotersTable({ voters }: { voters: VoterRecord[] }) {
     const needle = search.toLowerCase().trim();
     if (!needle) return voters;
     return voters.filter((voter) =>
-      [voter.userId, voter.name, voter.cohort, voter.candidateName]
+      [voter.userId, voter.candidateName]
         .filter(Boolean)
         .some((value) => value!.toLowerCase().includes(needle))
     );
@@ -43,7 +43,7 @@ export default function VotersTable({ voters }: { voters: VoterRecord[] }) {
           <table className="table">
             <thead>
               <tr className="text-nowrap">
-                <th>#</th><th>User ID</th><th>Nama Pemilih</th><th>Tahun Angkatan</th><th>Calon Terpilih</th><th>Aksi</th>
+                <th>#</th><th>User ID</th><th>Calon Terpilih</th><th>Aksi</th>
               </tr>
             </thead>
             <tbody>
@@ -51,18 +51,17 @@ export default function VotersTable({ voters }: { voters: VoterRecord[] }) {
                 <tr key={voter.id}>
                   <th scope="row">{index + 1}</th>
                   <td>{voter.userId}</td>
-                  <td>{voter.name}</td>
-                  <td>{voter.cohort}</td>
+
                   <td>{voter.candidateName ?? <i style={{ color: "red" }}>belum melakukan voting</i>}</td>
                   <td>
-                    <Link href={`/datapemilih/${voter.id}`} className="badge bg-info" aria-label={`Lihat ${voter.name}`}>
+                    <Link href={`/datapemilih/${voter.id}`} className="badge bg-info" aria-label={`Lihat ${voter.displayName}`}>
                       <i className="bx bx-show" />
                     </Link>
                   </td>
                 </tr>
               ))}
               {filtered.length === 0 && (
-                <tr><td colSpan={6} className="text-center text-muted py-4">Data pemilih tidak ditemukan.</td></tr>
+                <tr><td colSpan={5} className="text-center text-muted py-4">Data pemilih tidak ditemukan.</td></tr>
               )}
             </tbody>
           </table>
